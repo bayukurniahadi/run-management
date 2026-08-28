@@ -30,8 +30,8 @@ services:
       - AUTH_SECRET=${AUTH_SECRET}
       - AUTH_URL=${SERVICE_FQDN_WEB_3000}
       - RUN_MIGRATIONS_ON_START=1
-    ports:
-      - "3100:3000"
+    expose:
+      - "3000"
 
 volumes:
   db_data:
