@@ -33,13 +33,12 @@ services:
     expose:
       - "3000"
     labels:
+      # Tambahkan service label pada nama router yang di-generate Coolify supaya port 3000 dipakai
       - "traefik.enable=true"
       - "traefik.http.middlewares.gzip.compress=true"
-      - "traefik.http.routers.rm-web.entryPoints=http"
-      - "traefik.http.routers.rm-web.middlewares=gzip"
-      - "traefik.http.routers.rm-web.rule=Host(`management.run-web.tech`)"
-      - "traefik.http.routers.rm-web.service=rm-web-svc"
+      - "traefik.http.routers.http-0-tbnge6vzwoclprjb9nbe3cps-web.service=rm-web-svc"
       - "traefik.http.services.rm-web-svc.loadbalancer.server.port=3000"
+      - "traefik.http.services.rm-web-svc.loadbalancer.server.scheme=http"
 
 volumes:
   db_data:
