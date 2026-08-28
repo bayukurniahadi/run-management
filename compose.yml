@@ -32,6 +32,14 @@ services:
       - RUN_MIGRATIONS_ON_START=1
     expose:
       - "3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.gzip.compress=true"
+      - "traefik.http.routers.rm-web.entryPoints=http"
+      - "traefik.http.routers.rm-web.middlewares=gzip"
+      - "traefik.http.routers.rm-web.rule=Host(`management.run-web.tech`)"
+      - "traefik.http.routers.rm-web.service=rm-web-svc"
+      - "traefik.http.services.rm-web-svc.loadbalancer.server.port=3000"
 
 volumes:
   db_data:
