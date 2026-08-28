@@ -21,6 +21,10 @@ RUN addgroup -S app && adduser -S app -G app
 COPY --from=build --chown=app:app /app/public ./public
 COPY --from=build --chown=app:app /app/.next/standalone ./
 COPY --from=build --chown=app:app /app/.next/static ./.next/static
+# Salin paket runtime tambahan yang dipakai skrip entrypoint (di luar Next.js standalone tracer)
+COPY --from=build --chown=app:app /app/node_modules/postgres ./node_modules/postgres
+COPY --from=build --chown=app:app /app/node_modules/drizzle-orm ./node_modules/drizzle-orm
+COPY --from=build --chown=app:app /app/node_modules/bcryptjs ./node_modules/bcryptjs
 # Migrasi + skrip seed + entrypoint
 COPY --from=build --chown=app:app /app/drizzle ./drizzle
 COPY --from=build --chown=app:app /app/scripts ./scripts
