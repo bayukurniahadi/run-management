@@ -1,5 +1,5 @@
-# compose.yml — dibaca Coolify pada build pack "Docker Compose"
-# Coolify meng-clone repo di VPS, build image dari Dockerfile lokal, lalu run stack.
+# Dibaca Coolify. `SERVICE_FQDN_WEB_3000` adalah env sentinel Coolify —
+# ia menghubungkan port 3000 service `web` ke FQDN yang di-generate Coolify + Traefik.
 services:
   db:
     image: postgres:16-alpine
@@ -25,15 +25,13 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER:-run}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-run_dashboard}
-      AUTH_SECRET: ${AUTH_SECRET}
-      AUTH_URL: ${AUTH_URL}
-      RUN_MIGRATIONS_ON_START: "1"
+      - SERVICE_FQDN_WEB_3000
+      - DATABASE_URL=postgres://${POSTGRES_USER:-run}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-run_dashboard}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_URL=${SERVICE_FQDN_WEB_3000}
+      - RUN_MIGRATIONS_ON_START=1
     expose:
       - "3000"
-    labels:
-      # Coolify + Traefik: auto-configure HTTPS di domain SERVICE_FQDN_WEB
-      - "coolify.name=run-management"
 
 volumes:
   db_data:
